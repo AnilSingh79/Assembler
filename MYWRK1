@@ -1,0 +1,67 @@
+//KC03K8EA JOB ,'Anil Singh',MSGCLASS=H
+//STEP1    EXEC  PGM=ASSIST
+//SYSPRINT   DD  SYSOUT=*
+//SYSIN      DD  *
+**********************************************************
+*
+*  Program:     ASSIGN2
+*  Programmer:  Anil Singh (Z1666991)
+*
+*  Register usage:
+*           R2,R3: TOTAL, COUNTER
+*           R4,R5,R6: COLUMN1,COLUMN2,COLUMN3 (ON A CARD)
+*           R7 : COLUMN1+COLUMN2+COLUMN3
+*
+*  Acknoledgements:
+*      Developed using main-env-simulator by Tony Zhang
+*      http://code.google.com/p/mainframe-env-simulator/
+***********************************************************
+ASSIGN3  CSECT
+         USING ASSIGN3,15         R15 IS BASE REGISTER. THIS
+*                                 STATEMENT IS NEEDED BECOZ
+*                                 WE ARE USING IMPLICIT ADD.
+*                                 IN THIS PROGRAM.
+         XREAD CARD,80            READ FIRST CARD
+LOOP     BC    B'0100',EXIT
+         XDECI 2,CARD
+         XDECI 3,0(1)
+         XDECI 4,0(1)
+         XDECI 5,0(1)
+         XDECI 6,0(1)
+         XDECO 2,EID
+         XDECO 3,WAGE
+         XDECO 4,NHRS
+         XDECO 5,BONS
+         XDECO 6,DEDS
+         XPRNT TWAGE,20
+*        XPRNT WAGE,4
+EXIT     BCR   B'1111',14         EXIT FROM PROGRAM
+CARD     DS    CL80
+TWAGE    DC    C'0LINE: '
+EID      DS    CL12
+         DC    CL1' '
+WAGE     DS    CL12
+         DC    CL1' '
+NHRS     DS    CL12
+         DC    CL1' '
+BONS     DS    CL12
+         DC    CL1' '
+DEDS     DS    CL12
+/*
+//FT05F001   DD  *
+102306   800  35     0  2735
+123045   950  47  5000  3186
+204980  1025  40  2500  3814
+324506   835  52  3600  2600
+837142   910  43  1500  2000
+340712   950  37  4575  3500
+452170  1000  46   800  8247
+561141   875  20  1000     0
+752864  1350  41  5200  3710
+836629   930  29  6385  1850
+765743  1050  39  2450  1785
+479312  1100  34  1950  1700 
+890637  1525  55  5525  8217
+/*
+//FT06F001   DD SYSOUT=*
+//
